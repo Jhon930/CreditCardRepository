@@ -47,11 +47,11 @@ public class CreditCardServiceImpl implements CreditCardService{
 				.bodyToMono(CreditCard.class);
 				
 	}
-
+	
 	@Override
-	public Mono<CreditCard> generateCreditCardPayments(CreditCard creditcard) {
+	public Mono<CreditCard> saveCreditCard(CreditCard creditcard) {
 		// TODO Auto-generated method stub
-		return null;
+		return repository.save(creditcard);
 	}
 
 	@Override
@@ -72,10 +72,6 @@ public class CreditCardServiceImpl implements CreditCardService{
 		return null;
 	}
 
-	@Override
-	public Mono<CreditCard> saveCreditCard(CreditCard creditcard) {
-		// TODO Auto-generated method stub
-		return repository.save(creditcard);
-	}
+	
 
 }

@@ -13,8 +13,6 @@ public interface CreditCardService {
 	 
 	 Mono<CreditCard> chargeConsumesToCreditCard(CreditCard creditcard);
 	 
-	 Mono<CreditCard> generateCreditCardPayments(CreditCard creditcard);
-	 
 	 Flux<CreditCard> showCreditCardBalance(String numberCreditCard);
 	 
 	 Mono<CreditCard> findByClientDni(String dni); 
