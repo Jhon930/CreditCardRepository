@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 public interface CreditCardRepository extends ReactiveMongoRepository<CreditCard, String>{
 	
-    @Query(value="{'client.dni': ?0}", fields="{'client.dni':1}")	
+    @Query(value="{'personClient.dni': ?0}", fields="{'personClient.dni':1}")	
 	Mono<CreditCard> findByClientDni(String dni); 
 
 }

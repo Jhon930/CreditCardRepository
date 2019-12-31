@@ -1,6 +1,7 @@
 package com.project.creditcard.controller;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.URI;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.creditcard.model.CreditCard;
+import com.project.creditcard.model.SavingAccount;
 import com.project.creditcard.service.CreditCardService;
 
 import reactor.core.publisher.Mono;
@@ -26,41 +28,46 @@ public class CreditCardController {
 	@Autowired
 	private CreditCardService service;
 	
-    @PutMapping
-	public Mono<ResponseEntity<CreditCard>> chargeConsumes(@Valid @RequestBody CreditCard creditcard, @PathVariable(value = "id") String id){
+    @PutMapping("/update-balance/{id}")
+	public Mono<CreditCard> chargeConsumes(@Valid @RequestBody CreditCard creditcard, @PathVariable(value = "id") String id){
 		
-		BigDecimal balance = creditcard.getBalance();
-		BigDecimal amount = creditcard.getAmount();
+		//BigDecimal balance = creditcard.getBalance();
+		//BigDecimal amount = creditcard.getAmount();
 		    
-		BigDecimal currentBalance = balance.add(amount);
-		
-			return service.findByCreditCardID(id).flatMap(c -> {
-				 c.setBalance(currentBalance);
-				 return service.chargeConsumesToCreditCard(creditcard);
-			})
-			.map(c -> ResponseEntity.created(URI.create("/api/creditcard/".concat(c.getId())))
-					.contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(c))
-			.defaultIfEmpty(ResponseEntity.notFound().build());
+		return service.findByCreditCardID(id).flatMap(c -> {
+			 c.setBalance(c.getBalance().add(creditcard.getAmount()));		 
+			 return service.saveCreditCard(c);
+		});
 			
 	}
 	
-	@PostMapping
-	public Mono<ResponseEntity<CreditCard>> generateCreditCardPayments(@Valid @RequestBody CreditCard creditcard, @PathVariable(value = "id") String id){
+    @PutMapping("/update-balance2/{id}")
+	public Mono<CreditCard> generateCreditCardPayments(@Valid @RequestBody CreditCard creditcard, @PathVariable(value = "id") String id){
 		
-		BigDecimal totalAmount = creditcard.getTotalAmount();
-		BigDecimal minAmount = totalAmount.divide(BigDecimal.valueOf(36));
-		
-		BigDecimal newTotalAmount = totalAmount.subtract(minAmount);
-		
+		//BigDecimal totalAmount = creditcard.getTotalAmount();
+		//BigDecimal minAmount = totalAmount.divide(BigDecimal.valueOf(36));
+			
 		return service.findByCreditCardID(id).flatMap(c -> {
-			 c.setTotalAmount(newTotalAmount);
-			 return service.saveCreditCard(creditcard);
-		})
-		.map(c -> ResponseEntity.created(URI.create("/api/creditcard/".concat(c.getId())))
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.body(c))
-		.defaultIfEmpty(ResponseEntity.notFound().build());
+			 //c.setTotalAmount(totalAmount.subtract(minAmount));	 
+			 c.setTotalAmount(c.getTotalAmount().subtract(creditcard.getTotalAmount().divide(BigDecimal.valueOf(36), MathContext.DECIMAL128)));
+			 
+			 //BigDecimal result = num1.divide(num2, MathContext.DECIMAL128);
+			 
+			 return service.saveCreditCard(c);
+		});
 	}
 	
+    @PutMapping("/updatebalance1/{id}")
+    Mono<SavingAccount> insertDeposit(SavingAccount savingaccount, String id){
+    	
+    	return service.insertDeposit(savingaccount, id);
+    	
+    }
+    
+    @PutMapping("/updatebalance2/{id}")
+    Mono<SavingAccount> insertWithDraw(SavingAccount savingaccount, String id){
+    	
+    	return service.insertWithDraw(savingaccount, id);
+    	
+    }
 }

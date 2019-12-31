@@ -17,15 +17,18 @@ public class CreditCard {
 	private BigDecimal minAmount;
 	private BigDecimal totalAmount;
 	private BigDecimal amount;
-	private Client client;
+	private PersonClient personClient;
 	private String currency;
+	private String typeConsume;
+	private SavingAccount savingAccount;
+	
 	
 	public CreditCard() {
 		
 	}
 	
 	public CreditCard(String id, String cardNumber, BigDecimal balance, BigDecimal maxLimit, String expirationDate,
-			BigDecimal minAmount, BigDecimal totalAmount, BigDecimal amount, Client client, String currency) {
+			BigDecimal minAmount, BigDecimal totalAmount, BigDecimal amount, PersonClient personClient, String currency, String typeConsume, SavingAccount savingAccount) {
 		this.id = id;
 		this.cardNumber = cardNumber;
 		this.balance = balance;
@@ -34,8 +37,10 @@ public class CreditCard {
 		this.minAmount = minAmount;
 		this.totalAmount = totalAmount;
 		this.amount = amount;
-		this.client = client;
+		this.personClient = personClient;
 		this.currency = currency;
+		this.typeConsume = typeConsume;
+		this.savingAccount = savingAccount;
 	}
 	
 	public String getId() {
@@ -80,11 +85,11 @@ public class CreditCard {
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public Client getClient() {
-		return client;
+	public PersonClient getPersonClient() {
+		return personClient;
 	}
-	public void setClient(Client client) {
-		this.client = client;
+	public void setPersonClient(PersonClient personClient) {
+		this.personClient = personClient;
 	}
 	public String getCurrency() {
 		return currency;
@@ -98,5 +103,18 @@ public class CreditCard {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
+	public String getTypeConsume() {
+		return typeConsume;
+	}
+	public void setTypeConsume(String typeConsume) {
+		this.typeConsume = typeConsume;
+	}
+	public SavingAccount getSavingAccount() {
+		return savingAccount;
+	}
+	public void setSavingAccount(SavingAccount savingAccount) {
+		this.savingAccount = savingAccount;
+	}
+	
 	
 }

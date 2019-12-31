@@ -1,6 +1,6 @@
 package com.project.creditcard.model;
 
-public class Client {
+public class PersonClient {
 	
 	private String codeClient;
 	private String name;
@@ -10,7 +10,7 @@ public class Client {
 	private String phoneNumber;
 	private String clientType;
 
-	public Client(String codeClient, String name, String lastName, String dni, String address, String phoneNumber,
+	public PersonClient(String codeClient, String name, String lastName, String dni, String address, String phoneNumber,
 		String clientType) {
 		
 		this.codeClient = codeClient;
